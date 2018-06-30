@@ -8,7 +8,7 @@
 
 define('MODULBANK_VERSION', '1.0');
 
-include('modulbank_core.php');
+include('fpayments.php');
 
 
 class ControllerExtensionPaymentModulbank extends Controller {
@@ -129,7 +129,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
             HTTPS_SERVER . 'index.php?route=checkout/success',
             HTTPS_SERVER . 'index.php?route=checkout/failure',
             $this->get_back_url(),
-            //HTTPS_SERVER . 'index.php?route=payment/modulbank/callback',
+            HTTPS_SERVER . 'index.php?route=extension/payment/modulbank/callback',
             '',
             '',
             $receipt_contact,
