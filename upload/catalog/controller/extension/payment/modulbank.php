@@ -19,7 +19,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
 
         try {
             $form = $this->get_form();
-        } catch (FPaymentsError $e) {
+        } catch (Exception $e) {
             return "Ошибка: " . $e->getMessage();
         }
 
@@ -35,7 +35,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
     public function callback() {
         $ff = $this->get_form_object();
         if (!$this->request->post) {
-            echo "ERROR: empty request\n";
+            echo "It works!\n";
         } else if (!$ff->is_signature_correct($this->request->post)) {
             echo "ERROR: wrong signature\n";
         } else {
@@ -52,7 +52,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
                         $order_id,
                         $new_order_status_id,
                         "Оплата через Модульбанк",
-                        TRUE
+                        true
                     );
                 }
             }
@@ -85,6 +85,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
     /**
      * @return array
      * @throws FPaymentsError
+     * @throws Exception
      */
     private function get_form() {
         $this->load->model('checkout/order');
@@ -94,7 +95,8 @@ class ControllerExtensionPaymentModulbank extends Controller {
 
         $order_info = $this->model_checkout_order->getOrder($order_id);
 
-        $amount = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
+        # Не используем currency->format из-за неверных настроек по умолчанию для рубля (decimal_places=0).
+        $amount = round($order_info['total'] * $order_info['currency_value'], 2);
 
         $products = $this->model_extension_payment_modulbank->getOrderProducts($order_id);
         $receipt_items = array();
