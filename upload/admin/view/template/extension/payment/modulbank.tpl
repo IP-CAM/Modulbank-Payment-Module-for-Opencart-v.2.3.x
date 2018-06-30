@@ -102,7 +102,7 @@
 				</div>
 			</div>          
 			<div class="form-group">
-				<label class="col-sm-2 control-label" for="input-total"><?php echo $entry_sort_order; ?></label>
+				<label class="col-sm-2 control-label" for="input-total">&nbsp;</label>
 				<div class="col-sm-10">
 					 <a href="https://github.com/fpayments/modulbank-opencart23"><?php echo $modulbank_downloads; ?></a>
 				</div>

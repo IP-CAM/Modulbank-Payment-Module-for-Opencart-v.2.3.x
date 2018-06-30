@@ -94,9 +94,9 @@ class ControllerExtensionPaymentModulbank extends Controller {
         $data['modulbank_merchant_id'] = $this->initial('modulbank_merchant_id');
         $data['modulbank_secret_key'] =  $this->initial('modulbank_secret_key');
         $data['modulbank_mode'] = $this->initial('modulbank_mode', 'test');
-        $data['modulbank_order_status_id'] = $this->initial('modulbank_order_status_id');
+        $data['modulbank_order_status_id'] = $this->initial('modulbank_order_status_id', 5); // COMPLETE by default
         $data['modulbank_geo_zone_id'] = $this->initial('modulbank_geo_zone_id', 0);
-        $data['modulbank_status'] = $this->initial('modulbank_status', 5);  // COMPLETE by default
+        $data['modulbank_status'] = $this->initial('modulbank_status', 1);
         $data['modulbank_sort_order'] = $this->initial('modulbank_sort_order', 1);
 
 
