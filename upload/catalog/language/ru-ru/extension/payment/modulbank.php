@@ -1,5 +1,5 @@
 <?php
 
-$_['text_title'] = 'Modulbank';
+$_['text_title'] = 'Оплата банковской картой';
 
 ?>

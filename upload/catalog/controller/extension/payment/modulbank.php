@@ -10,17 +10,25 @@ define('MODULBANK_VERSION', '1.0');
 
 include('modulbank_core.php');
 
+
 class ControllerExtensionPaymentModulbank extends Controller {
 
     public function index() {
+
         $this->id = 'payment';
-        $data = array();
-        $data = array_merge($data, array(
+
+        try {
+            $form = $this->get_form();
+        } catch (FPaymentsError $e) {
+            return "Ошибка: " . $e->getMessage();
+        }
+
+        $data = array(
             'button_confirm'  => $this->language->get('button_confirm'),
             'button_back'     => $this->language->get('button_back'),
             'modulbank_url'    => $this->get_form_object()->get_url(),
-            'modulbank_fields' => FPaymentsForm::array_to_hidden_fields($this->get_form()),
-        ));
+            'modulbank_fields' => FPaymentsForm::array_to_hidden_fields($form),
+        );
         return $this->load->view('extension/payment/modulbank', $data);
     }
 
@@ -63,38 +71,51 @@ class ControllerExtensionPaymentModulbank extends Controller {
         );
     }
 
+    private function guessTaxRate($tax) {
+        if ($tax == 10 || $tax == 18 || $tax == 20) {
+            return "$tax_" . intval($tax);
+        } else {
+            return 'no_vat';
+        }
+    }
+
+    /**
+     * @return array
+     * @throws FPaymentsError
+     */
     private function get_form() {
         $this->load->model('checkout/order');
         $this->load->model('extension/payment/modulbank');
 
-        $currency = 'RUB';
         $order_id = $this->session->data['order_id'];
 
         $order_info = $this->model_checkout_order->getOrder($order_id);
 
-        $amount = $this->currency->format($order_info['total'], $currency, $order_info['currency_value'], false);
+        $amount = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
 
         $products = $this->model_extension_payment_modulbank->getOrderProducts($order_id);
         $receipt_items = array();
         foreach( $products as $productOrd ) {
-            $tax = $productOrd['tax']*100/$productOrd['price'];
             $receipt_items[] = new FPaymentsRecieptItem(
                 $productOrd['name'],
-                $productOrd['price']+$productOrd['tax'],
+                $productOrd['price'],
                 $productOrd['quantity'],
                 0,
-                $productOrd['tax']*100/$productOrd['price']		
+                $this->guessTaxRate($productOrd['tax'])
             );
         }
         $shipping = $this->model_extension_payment_modulbank->getOrderShipping($order_id);
         if ($shipping['cost']) {
-            $receipt_items[] = new FPaymentsRecieptItem('Доставка', $shipping['cost']+($shipping['cost']*$tax/100));
+            $receipt_items[] = new FPaymentsRecieptItem(
+                'Доставка',
+                $shipping['cost']
+            );
         }		
-        //print_r($receipt_items);
         $receipt_contact = $order_info['email'] ?: $order_info['telephone'] ?: '';
+
         return $this->get_form_object()->compose(
             $amount,
-            $currency,
+            $order_info['currency_code'],
             $order_id,
             $order_info['email'],
             $order_info['payment_firstname'] . ' ' . $order_info['payment_lastname'],
@@ -117,7 +138,4 @@ class ControllerExtensionPaymentModulbank extends Controller {
             return HTTPS_SERVER . 'index.php?route=checkout/guest_step_2';
         }
     }
-
 }
-
-?>
