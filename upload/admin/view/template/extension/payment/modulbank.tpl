@@ -85,13 +85,24 @@
 						<?php } ?>
 					</select>
 				</div>
-			</div>         
+			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="input-total"><?php echo $entry_status; ?></label>
 				<div class="col-sm-10">
 					<select name="modulbank_status">
 						<option value="1"<?php if ($modulbank_status)  { ?> selected="selected"<?php } ?>><?php echo $text_enabled; ?></option>
 						<option value="0"<?php if (!$modulbank_status) { ?> selected="selected"<?php } ?>><?php echo $text_disabled; ?></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-total"><?php echo $entry_delivery_vat_rate; ?></label>
+				<div class="col-sm-10">
+                                        <select name="modulbank_delivery_vat_rate">
+                                                <?php foreach ($delivery_vat_rates as $code => $desc ): ?>
+                                                <option value="<?= $code ?>" <?php if ($modulbank_delivery_vat_rate == $code ) echo 'selected="selected"'; ?>>
+                                                    <?= $desc ?>
+                                                <?php endforeach; ?>
 					</select>
 				</div>
 			</div>        

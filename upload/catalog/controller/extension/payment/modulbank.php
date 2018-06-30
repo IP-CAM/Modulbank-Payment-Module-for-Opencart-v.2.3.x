@@ -47,14 +47,17 @@ class ControllerExtensionPaymentModulbank extends Controller {
                 $new_order_status_id = $this->config->get('modulbank_order_status_id');
                 $current_order_status_id = $order_info['order_status_id'];
 
-                if (!$current_order_status_id) {
-                    $this->model_checkout_order->confirm($order_id, $new_order_status_id, 'modulbank');
-                } else if ($current_order_status_id != $new_order_status_id) {
-                    $this->model_checkout_order->update($order_id, $new_order_status_id, 'modulbank', TRUE);
+                if ($current_order_status_id != $new_order_status_id) {
+                    $this->model_checkout_order->addOrderHistory(
+                        $order_id,
+                        $new_order_status_id,
+                        "Оплата через Модульбанк",
+                        TRUE
+                    );
                 }
             }
 
-            echo "OK$order_id\n";
+            echo "OK $order_id\n";
         }
     }
 
@@ -73,7 +76,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
 
     private function guessTaxRate($tax) {
         if ($tax == 10 || $tax == 18 || $tax == 20) {
-            return "$tax_" . intval($tax);
+            return "vat_" . intval($tax);
         } else {
             return 'no_vat';
         }
@@ -108,7 +111,10 @@ class ControllerExtensionPaymentModulbank extends Controller {
         if ($shipping['cost']) {
             $receipt_items[] = new FPaymentsRecieptItem(
                 'Доставка',
-                $shipping['cost']
+                $shipping['cost'],
+                1,
+                0,
+                $this->config->get('modulbank_delivery_vat_rate')
             );
         }		
         $receipt_contact = $order_info['email'] ?: $order_info['telephone'] ?: '';

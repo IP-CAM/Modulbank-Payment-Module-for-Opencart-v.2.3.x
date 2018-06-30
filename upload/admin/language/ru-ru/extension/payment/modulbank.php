@@ -15,7 +15,6 @@ $_['entry_geo_zone'] = 'Регион:';
 $_['entry_status'] = 'Статус:';
 $_['entry_sort_order'] = 'Порядок сортировки:';
 $_['entry_callback_url'] = 'URL для уведомления о транзакциях:';
+$_['entry_delivery_vat_rate'] = 'Ставка налогообложения для услуги доставки';
 $_['modulbank_downloads'] = 'Свежие версии этого модуля на Github';
 $_['text_modulbank'] = '<a onclick="window.open(\'https://modulbank.ru/ekvayring/internet\');"><img src="view/image/payment/modulbank.jpg" height="25" alt="Modulbank.com" title="Modulbank.com"></a>';
-
-?>

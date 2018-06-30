@@ -51,8 +51,5 @@ class ModelExtensionPaymentModulbank extends Model {
 		} else {
 			return false;
 		}
-		
 	}
-
 }
-?>

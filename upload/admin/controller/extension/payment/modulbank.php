@@ -4,6 +4,15 @@ class ControllerExtensionPaymentModulbank extends Controller {
 
     private $error = array();
 
+    private $vat_rates = [
+        'no_vat' => 'Без НДС',
+        'vat_0' => '0%',
+        'vat_10' => '10%',
+        'vat_18' => '18%',
+        'vat_110' => '10/110',
+        'vat_118' => '18/118',
+    ];
+
     public function index() {
         $this->load->language('extension/payment/modulbank');
         $this->document->setTitle($this->language->get('heading_title'));
@@ -13,7 +22,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
         $this->load->model('localisation/geo_zone');
 
         if (
-            ($this->request->server['REQUEST_METHOD'] == 'POST') && 
+            ($this->request->server['REQUEST_METHOD'] == 'POST') &&
             $this->validate()
         ) {
             $this->model_setting_setting->editSetting('modulbank', $this->request->post);
@@ -21,8 +30,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
             $this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true));
         }
 
-        $data = array();
-        $data = array_merge($data, array(
+        $data = array(
             # == Form == 
 
             # merchant_id
@@ -57,12 +65,15 @@ class ControllerExtensionPaymentModulbank extends Controller {
             'text_enabled'          => $this->language->get('text_enabled'),
             'text_disabled'         => $this->language->get('text_disabled'),
 
+            # delivery VAT rate
+            'entry_delivery_vat_rate' => $this->language->get('entry_delivery_vat_rate'),
+            'delivery_vat_rates'    => $this->vat_rates,
+
             # sort order
             'entry_sort_order'      => $this->language->get('entry_sort_order'),
 
             # == Etc ==
-
-            'heading_title'         => $this->language->get('heading_title'), 
+            'heading_title'         => $this->language->get('heading_title'),
 
             'button_save'           => $this->language->get('button_save'),
             'button_cancel'         => $this->language->get('button_cancel'),
@@ -88,7 +99,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
                     'separator' => ' :: ',
                 ),
             ),
-        ));
+        );
 
 
         $data['modulbank_merchant_id'] = $this->initial('modulbank_merchant_id');
@@ -98,6 +109,7 @@ class ControllerExtensionPaymentModulbank extends Controller {
         $data['modulbank_geo_zone_id'] = $this->initial('modulbank_geo_zone_id', 0);
         $data['modulbank_status'] = $this->initial('modulbank_status', 1);
         $data['modulbank_sort_order'] = $this->initial('modulbank_sort_order', 1);
+        $data['modulbank_delivery_vat_rate'] = $this->initial('modulbank_delivery_vat_rate', 'vat_18');
 
 
         $data['header'] = $this->load->controller('common/header');
@@ -105,7 +117,6 @@ class ControllerExtensionPaymentModulbank extends Controller {
         $data['footer'] = $this->load->controller('common/footer');
 
         $this->response->setOutput($this->load->view('extension/payment/modulbank', $data));
-
     }
 
     protected function initial($k, $default=null) {
@@ -127,7 +138,12 @@ class ControllerExtensionPaymentModulbank extends Controller {
         if (!$this->request->post['modulbank_merchant_id']) {
             $this->error['merchant_id'] = $this->language->get('error_merchant_id');
         }
-        return $this->error ? FALSE : TRUE;
+
+        $delivery_vat_rate = $this->request->post['modulbank_delivery_vat_rate'];
+        if (! array_key_exists($delivery_vat_rate, $this->vat_rates)) {
+            error_log("Incorrect VAT value provided: $delivery_vat_rate");
+            return false;
+        }
+        return $this->error ? false : true;
     }
 }
-?>
