@@ -1,7 +1,7 @@
 <?php
 
 class FPaymentsConfig {
-    const HOST = 'http://localhost:8000';
+    const HOST = 'https://dev.futubank.com';
     const NAME = 'Modulbank';
     const PREFIX = 'modulbank';
 }
