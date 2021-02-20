@@ -1,39 +1,39 @@
-Платежный модуль для Opencart 2.3
+Payment module for Opencart 2.3
 =================================
 
 
-### Установка на сервер
+### Server installation
 
 
-1. Перейдите в раздел "Модули/Расширения", подраздел "Установка расширений"
-2. Нажмите на кнопку "Загрузить файл", выберите файл с расширением
-3. Нажмите на кнопку "Продолжить". Если загрузка завершится ошибкой, то будет необходимо загрузить файлы модуля самостоятельно. Инструкция для этого ниже.
-![Раздел "Установка расширений"](https://fpayments.github.io/screenshots/opencart2.3/extension-upload.png)
-4. Зайдите в панель администратора, в раздел "Модули / Расширения", подменю также "Модули / Расширения"
-5. Выберите тип расширения: "Оплата"
-6. Найдите модуль с названием "Оплата через Модульбанк", и нажмите на кнопку "+" рядом с ним.
-![Раздел "Активация расширения"](https://fpayments.github.io/screenshots/opencart2.3/extension-activate.png)
+1. Go to the section "Modules / Extensions", subsection "Installing extensions"
+2. Click on the "Upload file" button, select the file with the extension
+3. Click on the "Continue" button. If the download fails, you will need to download the module files yourself. Instructions for this are below.
+! [Section "Installing extensions"] (https://fpayments.github.io/screenshots/opencart2.3/extension-upload.png)
+4. Go to the admin panel, in the "Modules / Extensions" section, the submenu also "Modules / Extensions"
+5. Select the type of extension: "Payment"
+6. Find the module with the name "Payment via Modulbank" and click on the "+" button next to it.
+! [Section "Activating the extension"] (https://fpayments.github.io/screenshots/opencart2.3/extension-activate.png)
 
-### Настройка
+### Setting
 
-После установки необходимо установить основные настройки модуля:
+After installation, you need to set the basic settings of the module:
 
-  * Введите ID магазина и секретный ключ, которые можно узнать в личном кабинете Модульбанка
-  * При необходимости включите или отключите тестовый режим
-  * Убедитесь, что в настройках указана правильная ставка НДС для вашего магазина.
-![Раздел "Настройки"](https://fpayments.github.io/screenshots/opencart2.3/settings.png)
+  * Enter the store ID and secret key, which can be found in Modulbank's personal account
+  * Enable or disable test mode if necessary
+  * Make sure the settings are set to the correct VAT rate for your store.
+! [Section "Settings"] (https://fpayments.github.io/screenshots/opencart2.3/settings.png)
 
-### Ручная загрузка файлов модуля
+### Manually loading module files
 
-В случае, если загрузка стандартным способом завершается ошибкой, файлы модуля можно загрузить вручную, для этого:
+If loading in the standard way fails, the module files can be loaded manually, for this:
 
-1. Подключитесь к серверу любым удобным способом (FTP, SFTP, и т.д.)
-2. Откройте директорию на сервере, в которой у вас установлен интернет-магазин.
-3. Откройте файл с модулем на локальном компьютере (это zip-архив).
-4. Скопируйте содержимое папки upload в архиве модуля в корень сайта.
+1. Connect to the server in any convenient way (FTP, SFTP, etc.)
+2. Open the directory on the server where the online store is installed.
+3. Open the file with the module on the local computer (this is a zip archive).
+4. Copy the contents of the upload folder in the module archive to the site root.
 
-Дальнейшая настройка выполняется тем же способом, что при обычной установке модуля.
+Further configuration is performed in the same way as during normal module installation.
 
 
-### Видеодемонстрация установки
-![Раздел "Установка расширения Модульбанк"](https://fpayments.github.io/screenshots/opencart2.3/screencast.gif)
+### Installation video demonstration
+! [Section "Installing Modulbank extension"] (https://fpayments.github.io/screenshots/opencart2.3/screencast.gif) 
